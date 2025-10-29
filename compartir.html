@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compartir Recursos - Cerebroco</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #06d6a0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #2a9d8f;
+            --error: #e63946;
+            --warning: #ffd166;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-home:hover {
+            opacity: 0.8;
+        }
+        
+        .hero {
+            padding: 150px 0 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            padding: 60px 0;
+            background-color: white;
+        }
+        
+        .upload-section {
+            background-color: var(--light);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-title {
+            margin-bottom: 25px;
+            color: var(--dark);
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+        }
+        
+        .upload-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            border: 2px dashed #ddd;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-form.drag-over {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .file-upload {
+            text-align: center;
+            padding: 40px 20px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .file-upload i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .file-upload p {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+        
+        .files-section {
+            margin-top: 50px;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .file-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .file-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .file-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .file-icon.pdf { background-color: #ff6b6b; color: white; }
+        .file-icon.doc { background-color: #4dabf7; color: white; }
+        .file-icon.img { background-color: #ffa94d; color: white; }
+        .file-icon.video { background-color: #da77f2; color: white; }
+        .file-icon.other { background-color: var(--gray); color: white; }
+        
+        .file-info h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .file-meta {
+            font-size: 0.75rem;
+            color: var(--gray);
+            line-height: 1.3;
+        }
+        
+        .file-meta div:first-child {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .file-category {
+            display: inline-block;
+            padding: 3px 10px;
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .file-description {
+            margin-bottom: 15px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #e9ecef;
+            padding-top: 15px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 8px;
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .action-btn.edit { color: var(--primary); border-color: var(--primary); }
+        .action-btn.download { color: var(--success); border-color: var(--success); }
+        .action-btn.delete { color: var(--error); border-color: var(--error); }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .action-btn.edit:hover { background-color: var(--primary); color: white; }
+        .action-btn.download:hover { background-color: var(--success); color: white; }
+        .action-btn.delete:hover { background-color: var(--error); color: white; }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            color: var(--dark);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .files-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <h1>Cerebro<span>co</span></h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="#upload">Subir Archivo</a></li>
+                    <li><a href="#files">Archivos</a></li>
+                </ul>
+                <a href="index.html" class="back-home">
+                    <i class="fas fa-arrow-left"></i> Volver al Inicio
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Compartir Recursos</h1>
+            <p>Sube y comparte archivos educativos con la comunidad de Cerebroco</p>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="upload-section" id="upload">
+                <div class="section-title">
+                    <h2>Subir Nuevo Archivo</h2>
+                    <p>Comparte tus recursos educativos con la comunidad</p>
+                </div>
+                
+                <form class="upload-form" id="uploadForm">
+                    <div class="form-group">
+                        <label class="form-label" for="fileName">Título del Archivo</label>
+                        <input type="text" class="form-input" id="fileName" placeholder="Ej: Guía de Cálculo Diferencial" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="fileDescription">Descripción</label>
+                        <textarea class="form-textarea" id="fileDescription" placeholder="Describe brevemente el contenido del archivo..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="fileCategory">Categoría</label>
+                        <select class="form-select" id="fileCategory" required>
+                            <option value="">Selecciona una categoría</option>
+                            <option value="matematicas">Matemáticas</option>
+                            <option value="ciencias">Ciencias</option>
+                            <option value="lenguas">Lenguas</option>
+                            <option value="programacion">Programación</option>
+                            <option value="historia">Historia</option>
+                            <option value="arte">Arte</option>
+                            <option value="musica">Música</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="uploaderName">Tu Nombre</label>
+                        <input type="text" class="form-input" id="uploaderName" placeholder="Ej: Diego Delgado" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Subir Archivo</label>
+                        <div class="file-upload" id="fileUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Arrastra y suelta tu archivo aquí o haz clic para seleccionar</p>
+                            <p class="file-types">Tipos soportados: PDF, DOC, DOCX, JPG, PNG, MP4, MP3</p>
+                            <input type="file" class="file-input" id="fileInput" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.mp4,.mp3">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('fileInput').click()">
+                                Seleccionar Archivo
+                            </button>
+                        </div>
+                        <div id="selectedFile" style="margin-top: 15px; display: none;">
+                            <p><strong>Archivo seleccionado:</strong> <span id="fileNameDisplay"></span></p>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Subir Archivo
+                    </button>
+                </form>
+            </section>
+            
+            <section class="files-section" id="files">
+                <div class="section-title">
+                    <h2>Archivos Compartidos</h2>
+                    <p>Recursos educativos compartidos por la comunidad</p>
+                </div>
+                
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="matematicas">Matemáticas</button>
+                    <button class="filter-btn" data-filter="ciencias">Ciencias</button>
+                    <button class="filter-btn" data-filter="lenguas">Lenguas</button>
+                    <button class="filter-btn" data-filter="programacion">Programación</button>
+                    <button class="filter-btn" data-filter="otros">Otros</button>
+                </div>
+                
+                <div class="files-grid" id="filesGrid">
+                </div>
+                
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>No hay archivos compartidos</h3>
+                    <p>Sé el primero en compartir un recurso educativo</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Archivo</h3>
+                <button class="close-modal" id="closeEditModal">&times;</button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editFileId">
+                <div class="form-group">
+                    <label class="form-label" for="editFileName">Título</label>
+                    <input type="text" class="form-input" id="editFileName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editFileDescription">Descripción</label>
+                    <textarea class="form-textarea" id="editFileDescription"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editFileCategory">Categoría</label>
+                    <select class="form-select" id="editFileCategory" required>
+                        <option value="matematicas">Matemáticas</option>
+                        <option value="ciencias">Ciencias</option>
+                        <option value="lenguas">Lenguas</option>
+                        <option value="programacion">Programación</option>
+                        <option value="historia">Historia</option>
+                        <option value="arte">Arte</option>
+                        <option value="musica">Música</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        class FileManager {
+            constructor() {
+                this.files = JSON.parse(localStorage.getItem('cerebroco_files')) || [];
+                this.currentFilter = 'all';
+                this.init();
+            }
+            
+            init() {
+                this.renderFiles();
+                this.setupEventListeners();
+            }
+            
+            setupEventListeners() {
+
+                document.getElementById('uploadForm').addEventListener('submit', (e) => this.handleUpload(e));
+                
+                document.getElementById('fileInput').addEventListener('change', (e) => this.handleFileSelect(e));
+                
+                const uploadArea = document.getElementById('fileUploadArea');
+                uploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
+                uploadArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
+                uploadArea.addEventListener('drop', (e) => this.handleDrop(e));
+                
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.handleFilter(e));
+                });
+                
+                document.getElementById('closeEditModal').addEventListener('click', () => this.closeEditModal());
+                document.getElementById('editForm').addEventListener('submit', (e) => this.handleEdit(e));
+                
+                document.getElementById('editModal').addEventListener('click', (e) => {
+                    if (e.target === document.getElementById('editModal')) {
+                        this.closeEditModal();
+                    }
+                });
+            }
+            
+            handleUpload(e) {
+                e.preventDefault();
+                
+                const fileInput = document.getElementById('fileInput');
+                const fileName = document.getElementById('fileName').value;
+                const fileDescription = document.getElementById('fileDescription').value;
+                const fileCategory = document.getElementById('fileCategory').value;
+                const uploaderName = document.getElementById('uploaderName').value || 'Usuario Anónimo';
+                
+                if (!fileInput.files.length) {
+                    alert('Por favor selecciona un archivo');
+                    return;
+                }
+                
+                if (!fileName || !fileCategory || !uploaderName) {
+                    alert('Por favor completa todos los campos requeridos');
+                    return;
+                }
+                
+                const file = fileInput.files[0];
+                const fileId = Date.now().toString();
+                const now = new Date();
+                
+                const fileObj = {
+                    id: fileId,
+                    name: fileName,
+                    description: fileDescription,
+                    category: fileCategory,
+                    fileName: file.name,
+                    fileType: this.getFileType(file.name),
+                    fileSize: this.formatFileSize(file.size),
+                    uploadDate: now.toISOString(),
+                    uploaderName: uploaderName,
+                    formattedDate: this.formatDate(now),
+                    formattedTime: this.formatTime(now),
+                    fileUrl: URL.createObjectURL(file)
+                };
+                
+                this.files.unshift(fileObj);
+                this.saveFiles();
+                this.renderFiles();
+                this.resetForm();
+                
+                alert('¡Archivo subido exitosamente!');
+            }
+            
+            handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    this.displaySelectedFile(file);
+                }
+            }
+            
+            handleDragOver(e) {
+                e.preventDefault();
+                document.getElementById('fileUploadArea').classList.add('drag-over');
+            }
+            
+            handleDragLeave(e) {
+                e.preventDefault();
+                document.getElementById('fileUploadArea').classList.remove('drag-over');
+            }
+            
+            handleDrop(e) {
+                e.preventDefault();
+                document.getElementById('fileUploadArea').classList.remove('drag-over');
+                
+                const files = e.dataTransfer.files;
+                if (files.length) {
+                    document.getElementById('fileInput').files = files;
+                    this.displaySelectedFile(files[0]);
+                }
+            }
+            
+            displaySelectedFile(file) {
+                document.getElementById('fileNameDisplay').textContent = file.name;
+                document.getElementById('selectedFile').style.display = 'block';
+            }
+            
+            handleFilter(e) {
+                const filter = e.target.getAttribute('data-filter');
+                
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                e.target.classList.add('active');
+                
+                this.currentFilter = filter;
+                this.renderFiles();
+            }
+            
+            renderFiles() {
+                const filesGrid = document.getElementById('filesGrid');
+                const emptyState = document.getElementById('emptyState');
+                
+                let filteredFiles = this.files;
+                if (this.currentFilter !== 'all') {
+                    filteredFiles = this.files.filter(file => file.category === this.currentFilter);
+                }
+                
+                if (filteredFiles.length === 0) {
+                    filesGrid.innerHTML = '';
+                    emptyState.style.display = 'block';
+                    return;
+                }
+                
+                emptyState.style.display = 'none';
+                
+                filesGrid.innerHTML = filteredFiles.map(file => `
+                    <div class="file-card" data-file-id="${file.id}">
+                        <div class="file-header">
+                            <div class="file-icon ${file.fileType}">
+                                <i class="${this.getFileIcon(file.fileType)}"></i>
+                            </div>
+                            <div class="file-info">
+                                <h4>${file.name}</h4>
+                                <div class="file-meta">
+                                    <div><strong>${file.uploaderName}</strong> subió este archivo</div>
+                                    <div>el ${file.formattedDate} a las ${file.formattedTime}</div>
+                                    <div>${file.fileSize} • ${this.getCategoryName(file.category)}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="file-description">${file.description || 'Sin descripción'}</div>
+                        <div class="file-actions">
+                            <button class="action-btn edit" onclick="fileManager.openEditModal('${file.id}')">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="action-btn download" onclick="fileManager.downloadFile('${file.id}')">
+                                <i class="fas fa-download"></i> Descargar
+                            </button>
+                            <button class="action-btn delete" onclick="fileManager.deleteFile('${file.id}')">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            openEditModal(fileId) {
+                const file = this.files.find(f => f.id === fileId);
+                if (!file) return;
+                
+                document.getElementById('editFileId').value = file.id;
+                document.getElementById('editFileName').value = file.name;
+                document.getElementById('editFileDescription').value = file.description || '';
+                document.getElementById('editFileCategory').value = file.category;
+                
+                document.getElementById('editModal').classList.add('active');
+            }
+            
+            closeEditModal() {
+                document.getElementById('editModal').classList.remove('active');
+            }
+            
+            handleEdit(e) {
+                e.preventDefault();
+                
+                const fileId = document.getElementById('editFileId').value;
+                const name = document.getElementById('editFileName').value;
+                const description = document.getElementById('editFileDescription').value;
+                const category = document.getElementById('editFileCategory').value;
+                
+                const fileIndex = this.files.findIndex(f => f.id === fileId);
+                if (fileIndex !== -1) {
+                    this.files[fileIndex].name = name;
+                    this.files[fileIndex].description = description;
+                    this.files[fileIndex].category = category;
+                    
+                    this.saveFiles();
+                    this.renderFiles();
+                    this.closeEditModal();
+                    
+                    alert('Cambios guardados exitosamente');
+                }
+            }
+            
+            downloadFile(fileId) {
+                const file = this.files.find(f => f.id === fileId);
+                if (!file) return;
+
+                const link = document.createElement('a');
+                link.href = file.fileUrl;
+                link.download = file.fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                alert(`Descargando: ${file.name}`);
+            }
+            
+            deleteFile(fileId) {
+                if (confirm('¿Estás seguro de que quieres eliminar este archivo?')) {
+                    this.files = this.files.filter(f => f.id !== fileId);
+                    this.saveFiles();
+                    this.renderFiles();
+                    alert('Archivo eliminado exitosamente');
+                }
+            }
+            
+            resetForm() {
+                document.getElementById('uploadForm').reset();
+                document.getElementById('selectedFile').style.display = 'none';
+            }
+            
+            getFileType(filename) {
+                const ext = filename.split('.').pop().toLowerCase();
+                if (['pdf'].includes(ext)) return 'pdf';
+                if (['doc', 'docx'].includes(ext)) return 'doc';
+                if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) return 'img';
+                if (['mp4', 'avi', 'mov'].includes(ext)) return 'video';
+                if (['mp3', 'wav'].includes(ext)) return 'audio';
+                return 'other';
+            }
+            
+            getFileIcon(fileType) {
+                const icons = {
+                    'pdf': 'fas fa-file-pdf',
+                    'doc': 'fas fa-file-word',
+                    'img': 'fas fa-file-image',
+                    'video': 'fas fa-file-video',
+                    'audio': 'fas fa-file-audio',
+                    'other': 'fas fa-file'
+                };
+                return icons[fileType] || 'fas fa-file';
+            }
+            
+            getCategoryName(category) {
+                const categories = {
+                    'matematicas': 'Matemáticas',
+                    'ciencias': 'Ciencias',
+                    'lenguas': 'Lenguas',
+                    'programacion': 'Programación',
+                    'historia': 'Historia',
+                    'arte': 'Arte',
+                    'musica': 'Música',
+                    'otros': 'Otros'
+                };
+                return categories[category] || category;
+            }
+            
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            formatDate(date) {
+                return date.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            }
+            
+            formatTime(date) {
+                return date.toLocaleTimeString('es-ES', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
+            
+            saveFiles() {
+                localStorage.setItem('cerebroco_files', JSON.stringify(this.files));
+            }
+        }
+
+        const fileManager = new FileManager();
+    </script>
+</body>
+</html>

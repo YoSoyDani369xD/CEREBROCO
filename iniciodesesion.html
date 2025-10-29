@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Cerebroco</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #06d6a0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #2a9d8f;
+            --error: #e63946;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .auth-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+        
+        .auth-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .auth-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .auth-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-home:hover {
+            opacity: 0.8;
+        }
+        
+        .auth-content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+        
+        .form-input.error {
+            border-color: var(--error);
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .password-toggle {
+            position: relative;
+        }
+        
+        .password-toggle i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-google {
+            background-color: white;
+            color: var(--dark);
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-google:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #e9ecef;
+            z-index: 1;
+        }
+        
+        .divider span {
+            background-color: white;
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            background-color: rgba(42, 157, 143, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--success);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>Cerebroco</h1>
+            <p>Accede a tu cuenta de estudio colaborativo</p>
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i> Volver al inicio
+            </a>
+        </div>
+        
+        <div class="auth-content">
+            <div class="success-message" id="successMessage">
+                ¡Inicio de sesión exitoso! Redirigiendo...
+            </div>
+
+            <div class="welcome-message" id="welcomeMessage" style="display: none;">
+                ¡Cuenta creada exitosamente! Ahora inicia sesión.
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="loginEmail">Correo Electrónico</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="ingresa tu email" required>
+                    <div class="error-message" id="loginEmailError">Por favor ingresa un correo válido</div>
+                </div>
+                
+                <div class="form-group password-toggle">
+                    <label class="form-label" for="loginPassword">Contraseña</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Tu contraseña" required>
+                    <i class="fas fa-eye" id="toggleLoginPassword"></i>
+                    <div class="error-message" id="loginPasswordError">Se requiere la contraseña</div>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                    
+                    <div class="divider"><span>O continúa con</span></div>
+                    
+                    <button type="button" class="btn btn-google" id="googleLogin">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                </div>
+                
+                <div class="form-footer">
+                    <a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a>
+                </div>
+            </form>
+            
+            <div class="register-link">
+                ¿No tienes una cuenta? <a href="registro.html">Regístrate aquí</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        class AuthService {
+            constructor() {
+                this.users = JSON.parse(localStorage.getItem('cerebroco_users')) || [];
+            }
+            
+            login(credentials) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        const user = this.users.find(u => 
+                            u.email === credentials.email && u.password === credentials.password
+                        );
+                        
+                        if (user) {
+
+                            localStorage.setItem('cerebroco_currentUser', JSON.stringify({
+                                id: user.id,
+                                name: user.name,
+                                email: user.email
+                            }));
+                            resolve(user);
+                        } else {
+                            reject(new Error('Correo electrónico o contraseña incorrectos'));
+                        }
+                    }, 1000);
+                });
+            }
+            
+            loginWithGoogle() {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const googleUser = {
+                            id: 'google_' + Date.now().toString(),
+                            name: 'Usuario Google',
+                            email: 'usuario.google@ejemplo.com',
+                            isGoogleUser: true
+                        };
+                        
+                        let existingUser = this.users.find(user => user.email === googleUser.email);
+                        
+                        if (!existingUser) {
+                            this.users.push({
+                                ...googleUser,
+                                createdAt: new Date().toISOString()
+                            });
+                            localStorage.setItem('cerebroco_users', JSON.stringify(this.users));
+                        }
+
+                        localStorage.setItem('cerebroco_currentUser', JSON.stringify(googleUser));
+                        resolve(googleUser);
+                    }, 1500);
+                });
+            }
+        }
+
+        const authService = new AuthService();
+        const loginForm = document.getElementById('loginForm');
+        const successMessage = document.getElementById('successMessage');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const fromRegistration = localStorage.getItem('from_registration');
+            if (fromRegistration === 'true') {
+                welcomeMessage.style.display = 'block';
+                localStorage.removeItem('from_registration');
+
+                const registeredEmail = localStorage.getItem('registered_email');
+                if (registeredEmail) {
+                    document.getElementById('loginEmail').value = registeredEmail;
+                    localStorage.removeItem('registered_email');
+                }
+            }
+        });
+
+        document.getElementById('toggleLoginPassword').addEventListener('click', function() {
+            togglePasswordVisibility('loginPassword', this);
+        });
+        
+        function togglePasswordVisibility(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!validateLoginForm()) return;
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                const submitBtn = loginForm.querySelector('button[type="submit"]');
+                submitBtn.textContent = 'Iniciando sesión...';
+                submitBtn.disabled = true;
+                
+                const user = await authService.login({ email, password });
+
+                successMessage.style.display = 'block';
+                loginForm.reset();
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+                
+            } catch (error) {
+                showError('loginPassword', error.message);
+            } finally {
+                const submitBtn = loginForm.querySelector('button[type="submit"]');
+                submitBtn.textContent = 'Iniciar Sesión';
+                submitBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('googleLogin').addEventListener('click', async function() {
+            try {
+                const googleBtn = this;
+                googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando...';
+                googleBtn.disabled = true;
+                
+                const user = await authService.loginWithGoogle();
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+                
+            } catch (error) {
+                alert('Error al conectar con Google');
+                const googleBtn = document.getElementById('googleLogin');
+                googleBtn.innerHTML = '<i class="fab fa-google"></i> Google';
+                googleBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('forgotPassword').addEventListener('click', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            if (email && isValidEmail(email)) {
+                alert(`Se ha enviado un enlace de recuperación a: ${email}`);
+            } else {
+                alert('Por favor ingresa tu correo electrónico primero');
+            }
+        });
+
+        function validateLoginForm() {
+            let isValid = true;
+            const email = document.getElementById('loginEmail');
+            const password = document.getElementById('loginPassword');
+            
+            if (!email.value || !isValidEmail(email.value)) {
+                showError('loginEmail', 'Por favor ingresa un correo válido');
+                isValid = false;
+            } else {
+                clearError('loginEmail');
+            }
+            
+            if (!password.value) {
+                showError('loginPassword', 'La contraseña es requerida');
+                isValid = false;
+            } else {
+                clearError('loginPassword');
+            }
+            
+            return isValid;
+        }
+
+        function showError(fieldId, message) {
+            const input = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+            
+            input.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function clearError(fieldId) {
+            const input = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+            
+            input.classList.remove('error');
+            errorElement.style.display = 'none';
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+</body>
+</html>

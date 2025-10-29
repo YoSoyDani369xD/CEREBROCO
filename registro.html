@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Cerebroco</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #06d6a0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #2a9d8f;
+            --error: #e63946;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .auth-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .auth-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .back-home:hover {
+            opacity: 0.8;
+        }
+
+        .auth-content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        .form-input.error {
+            border-color: var(--error);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-google {
+            background-color: white;
+            color: var(--dark);
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-google:hover {
+            background-color: #f8f9fa;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #e9ecef;
+            z-index: 1;
+        }
+
+        .divider span {
+            background-color: white;
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .success-message {
+            background-color: rgba(42, 157, 143, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>Cerebroco</h1>
+            <p>Crea tu cuenta en la plataforma de estudio colaborativo</p>
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i> Volver al inicio
+            </a>
+        </div>
+
+        <div class="auth-content">
+            <div class="success-message" id="successMessage">
+                ¡Registro exitoso! Redirigiendo...
+            </div>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label" for="registerName">Nombre Completo</label>
+                    <input type="text" class="form-input" id="registerName" placeholder="Tu nombre completo" required>
+                    <div class="error-message" id="registerNameError">Por favor ingresa tu nombre completo</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="registerEmail">Correo Electrónico</label>
+                    <input type="email" class="form-input" id="registerEmail" placeholder="ingresa tu email" required>
+                    <div class="error-message" id="registerEmailError">Por favor ingresa un correo válido</div>
+                </div>
+
+                <div class="form-group password-toggle">
+                    <label class="form-label" for="registerPassword">Contraseña</label>
+                    <input type="password" class="form-input" id="registerPassword"
+                        placeholder="Crea una contraseña" required>
+                    <i class="fas fa-eye" id="toggleRegisterPassword"></i>
+                    <div class="error-message" id="registerPasswordError">La contraseña debe tener al menos 8 caracteres
+                    </div>
+                </div>
+
+                <div class="form-group password-toggle">
+                    <label class="form-label" for="registerConfirmPassword">Confirmar Contraseña</label>
+                    <input type="password" class="form-input" id="registerConfirmPassword"
+                        placeholder="Repite tu contraseña" required>
+                    <i class="fas fa-eye" id="toggleRegisterConfirmPassword"></i>
+                    <div class="error-message" id="registerConfirmPasswordError">Las contraseñas no coinciden</div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Crear Cuenta</button>
+
+                    <div class="divider"><span>O regístrate con</span></div>
+
+                    <button type="button" class="btn btn-google" id="googleRegister">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                </div>
+
+                <div class="form-footer">
+                    Al registrarte, aceptas nuestros <a href="#">Términos de Servicio</a> y <a href="#">Política de
+                        Privacidad</a>
+                </div>
+            </form>
+
+            <div class="login-link">
+                ¿Ya tienes una cuenta? <a href="iniciodesesion.html">Inicia sesión aquí</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class AuthService {
+            constructor() {
+                this.users = JSON.parse(localStorage.getItem('cerebroco_users')) || [];
+            }
+
+            register(userData) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        const existingUser = this.users.find(user => user.email === userData.email);
+                        if (existingUser) {
+                            reject(new Error('Ya existe una cuenta con este correo electrónico'));
+                            return;
+                        }
+
+                        const newUser = {
+                            id: Date.now().toString(),
+                            name: userData.name,
+                            email: userData.email,
+                            password: userData.password,
+                            createdAt: new Date().toISOString()
+                        };
+
+                        this.users.push(newUser);
+                        localStorage.setItem('cerebroco_users', JSON.stringify(this.users));
+
+                        resolve({
+                            success: true,
+                            message: 'Usuario registrado exitosamente'
+                        });
+                    }, 1000);
+                });
+            }
+
+            loginWithGoogle() {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const googleUser = {
+                            id: 'google_' + Date.now().toString(),
+                            name: 'Usuario Google',
+                            email: 'usuario.google@ejemplo.com',
+                            isGoogleUser: true
+                        };
+
+                        let existingUser = this.users.find(user => user.email === googleUser.email);
+
+                        if (!existingUser) {
+                            this.users.push({
+                                ...googleUser,
+                                createdAt: new Date().toISOString()
+                            });
+                            localStorage.setItem('cerebroco_users', JSON.stringify(this.users));
+                        }
+
+                        localStorage.setItem('cerebroco_currentUser', JSON.stringify(googleUser));
+                        resolve(googleUser);
+                    }, 1500);
+                });
+            }
+        }
+
+        const authService = new AuthService();
+        const registerForm = document.getElementById('registerForm');
+        const successMessage = document.getElementById('successMessage');
+
+        document.getElementById('toggleRegisterPassword').addEventListener('click', function () {
+            togglePasswordVisibility('registerPassword', this);
+        });
+
+        document.getElementById('toggleRegisterConfirmPassword').addEventListener('click', function () {
+            togglePasswordVisibility('registerConfirmPassword', this);
+        });
+
+        function togglePasswordVisibility(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        registerForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            if (!validateRegisterForm()) return;
+
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const submitBtn = registerForm.querySelector('button[type="submit"]');
+                submitBtn.textContent = 'Creando cuenta...';
+                submitBtn.disabled = true;
+
+                await authService.register({ name, email, password });
+
+                successMessage.style.display = 'block';
+                registerForm.reset();
+
+                localStorage.setItem('from_registration', 'true');
+                localStorage.setItem('registered_email', email);
+
+                setTimeout(() => {
+                    window.location.href = 'iniciodesesion.html';
+                }, 2000);
+
+            } catch (error) {
+                showError('registerEmail', error.message);
+            } finally {
+                const submitBtn = registerForm.querySelector('button[type="submit"]');
+                submitBtn.textContent = 'Crear Cuenta';
+                submitBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('googleRegister').addEventListener('click', async function () {
+            try {
+                const googleBtn = this;
+                googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando...';
+                googleBtn.disabled = true;
+
+                const user = await authService.loginWithGoogle();
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+
+            } catch (error) {
+                alert('Error al conectar con Google');
+                const googleBtn = document.getElementById('googleRegister');
+                googleBtn.innerHTML = '<i class="fab fa-google"></i> Google';
+                googleBtn.disabled = false;
+            }
+        });
+
+        function validateRegisterForm() {
+            let isValid = true;
+            const name = document.getElementById('registerName');
+            const email = document.getElementById('registerEmail');
+            const password = document.getElementById('registerPassword');
+            const confirmPassword = document.getElementById('registerConfirmPassword');
+
+            if (!name.value.trim()) {
+                showError('registerName', 'Por favor ingresa tu nombre completo');
+                isValid = false;
+            } else {
+                clearError('registerName');
+            }
+
+            if (!email.value || !isValidEmail(email.value)) {
+                showError('registerEmail', 'Por favor ingresa un correo válido');
+                isValid = false;
+            } else {
+                clearError('registerEmail');
+            }
+
+            if (!password.value || password.value.length < 8) {
+                showError('registerPassword', 'La contraseña debe tener al menos 8 caracteres');
+                isValid = false;
+            } else {
+                clearError('registerPassword');
+            }
+
+            if (password.value !== confirmPassword.value) {
+                showError('registerConfirmPassword', 'Las contraseñas no coinciden');
+                isValid = false;
+            } else {
+                clearError('registerConfirmPassword');
+            }
+
+            return isValid;
+        }
+
+        function showError(fieldId, message) {
+            const input = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+
+            input.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function clearError(fieldId) {
+            const input = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+
+            input.classList.remove('error');
+            errorElement.style.display = 'none';
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+</body>
+
+</html>
